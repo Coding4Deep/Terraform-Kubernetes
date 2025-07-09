@@ -25,8 +25,8 @@ pipeline {
 
         stage('Debug') {
             steps {
-                sh 'echo $AWS_ACCESS_KEY_ID | sed "s/./& /g"'
-                sh 'echo $AWS_SECRET_ACCESS_KEY | sed "s/./& /g"'
+                sh 'echo $AWS_ACCESS_KEY_ID'
+                sh 'echo $AWS_SECRET_ACCESS_KEY'
             }
         }
         
