@@ -1,7 +1,7 @@
 pipeline {
     agent { label 'worker-01' }
 
-    trigger {
+    triggers {
         githubPush()
     }   
 
