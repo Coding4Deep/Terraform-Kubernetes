@@ -1,0 +1,26 @@
+pipeline {
+    agent { label 'worker-01' }
+
+    trigger {
+        githubPush()
+    }   
+
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        AWS_DEFAULT_REGION    = 'us-east-1'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'terraform', url: 'https://github.com/Coding4Deep/Terraform-Kubernetes.git'
+            }
+        }
+        stage('credentials check'){
+            steps {
+               sh 'aws s3 ls'
+            }
+        }
+    } 
+}
