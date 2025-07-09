@@ -17,9 +17,9 @@ pipeline {
                 git branch: 'terraform', url: 'https://github.com/Coding4Deep/Terraform-Kubernetes.git'
             }
         }
-        stage('AWS Credential Check') {
+        stage('credentials check'){
             steps {
-                sh 'aws sts get-caller-identity'
+               sh 'aws s3 ls'
             }
         }
 
