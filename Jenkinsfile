@@ -29,6 +29,10 @@ pipeline {
                 sh 'echo $AWS_SECRET_ACCESS_KEY'
             }
         }
-        
+        stage('AWS Credential Check') {
+            steps {
+                sh 'aws sts get-caller-identity'
+            }
+        }
     } 
 }
