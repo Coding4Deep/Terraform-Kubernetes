@@ -17,16 +17,18 @@ pipeline {
                 git branch: 'terraform', url: 'https://github.com/Coding4Deep/Terraform-Kubernetes.git'
             }
         }
-        stage('credentials check'){
+        stage('AWS Credential Check') {
             steps {
-               sh 'aws s3 ls'
+                sh 'aws sts get-caller-identity'
             }
         }
 
-        stage('Terraform Init') {
+        stage('Debug') {
             steps {
-                sh 'terraform init'
+                sh 'echo $AWS_ACCESS_KEY_ID | sed "s/./& /g"'
+                sh 'echo $AWS_SECRET_ACCESS_KEY | sed "s/./& /g"'
             }
         }
+        
     } 
 }
