@@ -17,11 +17,11 @@ pipeline {
                 git branch: 'terraform', url: 'https://github.com/Coding4Deep/Terraform-Kubernetes.git'
             }
         }
-        // stage('credentials check'){
-        //     steps {
-        //        sh 'aws s3 ls'
-        //     }
-        // }
+        stage('credentials check'){
+            steps {
+               sh 'aws s3 ls'
+            }
+        }
 
         stage('Terraform Init') {
             steps {
