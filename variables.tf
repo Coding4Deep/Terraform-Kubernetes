@@ -83,7 +83,7 @@ variable "public_instances" {
   }))
   default = {
     master = {
-      ami           = "ami-020cba7c55df1f615" 
+      ami           = "ami-0a7d80731ae1b2435" 
       instance_type = "t2.medium"
     }
   }
@@ -98,7 +98,7 @@ variable "private_instances" {
   }))
   default = {
     worker-01 = {
-      ami           = "ami-020cba7c55df1f615" 
+      ami           = "ami-0a7d80731ae1b2435" 
       instance_type = "t2.large"
     },
     worker-02 = {
