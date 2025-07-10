@@ -102,7 +102,7 @@ variable "private_instances" {
       instance_type = "t2.large"
     },
     worker-02 = {
-      ami           = "ami-020cba7c55df1f615" 
+      ami           = "ami-0a7d80731ae1b2435" 
       instance_type = "t2.large"
     }
   }
