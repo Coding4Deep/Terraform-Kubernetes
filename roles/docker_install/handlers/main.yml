@@ -1,3 +1,4 @@
-#SPDX-License-Identifier: MIT-0
----
-# handlers file for docker_install
+- name: Restart Docker
+  systemd:
+    name: "{{ docker_service_name }}"
+    state: restarted
