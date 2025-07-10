@@ -1,0 +1,6 @@
+---
+- name: installation of k8s components
+  hosts: all
+  become: yes
+  roles:
+    - k8s_components

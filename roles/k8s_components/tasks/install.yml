@@ -1,0 +1,41 @@
+---
+- name: Install Kubernetes components
+  apt:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: present
+    update_cache: yes
+
+- name: Hold Kubernetes packages at current version
+  command: apt-mark hold kubelet kubeadm kubectl
+  when: ansible_distribution_version is version('20.04', '>=')
+
+- name: Enable and start kubelet
+  systemd:
+    name: kubelet
+    enabled: yes
+    state: started
+
+- name: Verify Kubernetes components installation
+  command: kubectl version --client
+  register: kubectl_version
+  changed_when: false
+
+- name: Display Kubernetes client version
+  debug:
+    msg: "Kubernetes client version: {{ kubectl_version.stdout }}"
+
+- name: Display Kubernetes component versions
+  shell: |
+    kubelet --version
+    kubeadm version
+    kubectl version --client
+  register: k8s_versions
+  changed_when: false
+
+- name: Show Kubernetes component versions
+  debug:
+    msg: "Kubernetes versions:\n{{ k8s_versions.stdout }}"
+

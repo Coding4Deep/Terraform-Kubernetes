@@ -1,0 +1,2 @@
+kubeadm_join_cmd_path: /home/ubuntu/kubeadm_join_cmd.sh
+kube_config_path: /home/ubuntu/.kube/config

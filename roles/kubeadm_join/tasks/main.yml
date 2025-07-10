@@ -1,0 +1,15 @@
+- name: Add shebang to join script locally
+  local_action: command bash -c "echo '#!/bin/bash' | cat - {{ kubeadm_join_cmd_path }} > /tmp/kubeadm_join_cmd_with_shebang.sh"
+  run_once: true
+  delegate_to: localhost
+
+- name: Copy join command script to worker nodes
+  copy:
+    src: /tmp/kubeadm_join_cmd_with_shebang.sh
+    dest: /tmp/kubeadm_join.sh
+    mode: 0700
+
+- name: Run kubeadm join
+  command: /tmp/kubeadm_join.sh
+  args:
+    creates: /etc/kubernetes/kubelet.conf

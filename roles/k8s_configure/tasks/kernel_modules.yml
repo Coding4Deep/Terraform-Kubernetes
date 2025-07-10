@@ -1,0 +1,17 @@
+---
+- name: Ensure kernel modules are loaded
+  copy:
+    dest: /etc/modules-load.d/containerd.conf
+    content: |
+      overlay
+      br_netfilter
+
+- name: Load overlay module
+  modprobe:
+    name: overlay
+    state: present
+
+- name: Load br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present

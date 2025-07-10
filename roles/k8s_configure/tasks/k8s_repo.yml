@@ -1,0 +1,40 @@
+---
+- name: Ensure keyring directory exists
+  file:
+    path: "{{ k8s_repo_key_path | dirname }}"
+    state: directory
+    mode: "0755"
+
+- name: Remove old keyring if exists
+  file:
+    path: "{{ k8s_repo_key_path }}"
+    state: absent
+
+- name: Download Kubernetes APT GPG key (ASCII)
+  get_url:
+    url: "{{ k8s_repo_key_url }}"
+    dest: "/tmp/kubernetes-apt-keyring.asc"
+    mode: "0644"
+    force: yes
+
+- name: Convert GPG key to binary format
+  command: >
+    gpg --dearmor -o {{ k8s_repo_key_path }} /tmp/kubernetes-apt-keyring.asc
+  args:
+    creates: "{{ k8s_repo_key_path }}"
+
+- name: Set permissions on keyring
+  file:
+    path: "{{ k8s_repo_key_path }}"
+    mode: "0644"
+
+- name: Add Kubernetes APT repository
+  apt_repository:
+    repo: "{{ k8s_repo_url }}"
+    state: present
+    filename: "{{ k8s_repo_filename }}"
+    update_cache: yes
+
+- name: Update apt cache
+  apt:
+    update_cache: yes

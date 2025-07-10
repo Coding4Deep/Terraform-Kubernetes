@@ -1,0 +1,17 @@
+---
+- name: Disable swap
+  import_tasks: swapoff.yml
+
+- name: Load required kernel modules
+  import_tasks: kernel_modules.yml
+
+- name: Set sysctl parameters for Kubernetes
+  import_tasks: sysctl.yml
+
+- name: Configure containerd with SystemdCgroup
+  import_tasks: containerd_config.yml
+
+- name: Add Kubernetes apt repo and key
+  import_tasks: k8s_repo.yml
+  tags:
+    - k8s_repo
