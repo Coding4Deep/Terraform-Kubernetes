@@ -13,3 +13,15 @@ module "PublicEC2" {
   volume_size      = var.volume_size
   volume_type      = var.volume_type
 }
+
+
+module "PrivateEC2" {
+  source = "./PrivateEC2"
+
+  private_instances = var.private_instances
+  pem_file_name     = var.pem_file_name
+  private_subnet_id = var.private_subnet_id
+  private_sg_id     = var.private_sg_id
+  volume_size       = var.volume_size
+  volume_type       = var.volume_type
+} 

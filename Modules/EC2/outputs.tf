@@ -13,3 +13,10 @@ output "public_instances_private_ips" {
     name => instance
   }
 }
+
+output "private_instances_private_ips" {
+  value = {
+    for name, instance in module.PrivateEC2.private_instances_private_ips :
+    name => instance
+  }
+}

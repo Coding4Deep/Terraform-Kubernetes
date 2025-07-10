@@ -14,19 +14,19 @@ terraform {
   }
 }
 
-# provider "vault" {
-#   address         = var.vault_addr
-#   token           = var.vault_token
-#   skip_tls_verify = true
-# }
+provider "vault" {
+  address         = var.vault_addr
+  token           = var.vault_token
+  skip_tls_verify = true
+}
 
-# data "vault_generic_secret" "aws_creds" {
-#   path = "aws-creds/myapp"
-# }
+data "vault_generic_secret" "aws_creds" {
+  path = "aws-creds/myapp"
+}
 
 provider "aws" {
-  # access_key = data.vault_generic_secret.aws_creds.data["access_key"]
-  # secret_key = data.vault_generic_secret.aws_creds.data["secret_key"]
+  access_key = data.vault_generic_secret.aws_creds.data["access_key"]
+  secret_key = data.vault_generic_secret.aws_creds.data["secret_key"]
   region     = var.aws_region
 }
 
@@ -57,9 +57,15 @@ module "SecurityGroup" {
 module "EC2" {
   source = "./Modules/EC2"
   pem_file_name   = var.pem_file_name
+  volume_size      = var.volume_size
+  volume_type      = var.volume_type
+
   public_instances = var.public_instances
   public_subnet_id = module.VPC.public_subnet_id
   public_sg_id     = module.SecurityGroup.public_ec2_sg_id
-  volume_size      = var.volume_size
-  volume_type      = var.volume_type
+
+  private_instances = var.private_instances
+  private_subnet_id = module.VPC.private_subnet_id
+  private_sg_id     = module.SecurityGroup.private_ec2_sg_id
 }
+

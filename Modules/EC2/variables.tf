@@ -2,7 +2,16 @@ variable "pem_file_name" {
   description = "The name of the PEM file to create"
   type        = string
 }   
+variable "volume_size" {
+  description = "Size of the root volume in GB"
+  type        = number
+}
+variable "volume_type" {
+  description = "Type of the root volume"
+  type        = string
+}
 
+# PUBLIC EC2 VARIABLES
 variable "public_instances" {
   description = "Map of public instance configurations"
   type        = map(object({
@@ -18,12 +27,22 @@ variable "public_sg_id" {
   description = "ID of the security group for public EC2 instances"
   type        = string
 }
-variable "volume_size" {
-  description = "Size of the root volume in GB"
-  type        = number
+
+
+# PRIVATE EC2 VARIABLES
+
+variable "private_instances" {
+  type = map(object({
+    ami           = string
+    instance_type = string
+  }))
+  description = "Map of private instance configurations"
 }
-variable "volume_type" {
-  description = "Type of the root volume"
+variable "private_subnet_id" {
+  description = "ID of the private subnet where EC2 instances will be launched"
   type        = string
 }
-
+variable "private_sg_id" {
+  description = "ID of the security group for private EC2 instances"
+  type        = string
+} 

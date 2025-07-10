@@ -32,3 +32,11 @@ output "public_instances_private_ips" {
   }
   description = "A map of private IPs for the public EC2 instances."
 }
+
+output "private_instances_private_ips" {
+  value = {
+    for name, instance in module.EC2.private_instances_private_ips :
+    name => instance
+  }
+  description = "A map of private IPs for the private EC2 instances."
+} 
