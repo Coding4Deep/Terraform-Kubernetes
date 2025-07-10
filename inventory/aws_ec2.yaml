@@ -1,0 +1,22 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+
+filters:
+  tag:project: kubernetes
+
+
+compose:
+  ansible_host: >-
+    (tags.Name in [ 'master' ]) | ternary(public_ip_address, private_ip_address)
+
+  ansible_ssh_common_args: >-
+    (tags.Name in [ 'worker-01' , 'worker-02' ]) | ternary(
+      "-o ProxyCommand='ssh -o StrictHostKeyChecking=no -i ~/k8s-project-key.pem -W %h:%p ubuntu@{{ hostvars[(groups['master'] | list)[0]].ansible_host }}'",
+      ""
+    )
+
+keyed_groups:
+  - key: tags.Name
+    prefix: ""
+    separator: ""

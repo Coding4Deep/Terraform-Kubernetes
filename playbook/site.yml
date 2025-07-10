@@ -1,0 +1,13 @@
+- name: testing all server 
+  hosts: all
+  become: true
+ 
+  # tasks:
+  #   - name: ping all servers
+  #     ansible.builtin.ping:
+  #     register: ping_result
+
+  #   - name: display ping result
+  #     ansible.builtin.debug:
+  #       var: ping_result
+  #       verbosity: 1

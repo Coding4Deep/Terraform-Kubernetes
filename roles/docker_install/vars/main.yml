@@ -1,0 +1,12 @@
+---
+docker_keyring_path: /usr/share/keyrings/docker-archive-keyring.gpg
+docker_key_url: https://download.docker.com/linux/ubuntu/gpg
+docker_apt_repo_base: "https://download.docker.com/linux/ubuntu"
+docker_apt_repo: "deb [arch=amd64 signed-by={{ docker_keyring_path }}] {{ docker_apt_repo_base }} {{ ansible_distribution_release }} stable"
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin
+docker_service_name: docker
