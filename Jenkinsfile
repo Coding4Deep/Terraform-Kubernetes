@@ -8,8 +8,8 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION    = 'us-east-1'
-        VAULT_ADDR          = credentials('vault-addr')
-        VAULT_TOKEN         = credentials('vault-token')
+        VAULT_ADDR            = credentials('vault_addr')
+        VAULT_TOKEN           = credentials('vault_token')
     }
     stages {
         stage('Checkout') {
