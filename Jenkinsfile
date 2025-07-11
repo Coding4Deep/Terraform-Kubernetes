@@ -54,14 +54,14 @@ pipeline {
    
 
     post {
-        always {
+        success {
             emailext(
-                subject: "✅ Jenkins Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                subject: "✅ Jenkins Build SUCCESS: ${JOB_NAME} #${BUILD_NUMBER}",
                 body: """<html>
                             <body>
                                 <p>Build Status: SUCCESS</p>
-                                <p>The Jenkins job <b>${env.JOB_NAME}</b> completed <b>successfully</b>.</p>
-                                <p><a href="${env.BUILD_URL}">Click here to view the build</a></p>
+                                <p>The Jenkins job <b>${JOB_NAME}</b> completed <b>successfully</b>.</p>
+                                <p><a href="${BUILD_URL}">Click here to view the build</a></p>
                             </body>
                         </html>""",
                 to: 'sagardeepak2002@gmail.com',
@@ -70,5 +70,5 @@ pipeline {
                 mimeType: 'text/html'
             )
         }
-    }
+    }         
 }
