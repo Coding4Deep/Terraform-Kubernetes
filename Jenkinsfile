@@ -50,6 +50,25 @@ pipeline {
                 }
             }
         }
+    }
+   
 
+    post {
+        success {
+            emailext(
+                subject: "✅ Jenkins Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """   <html>
+                                <body>
+                                    <p> Build Status - ${currentBuild.result} </p>
+                                    <p>The Jenkins job <b>${env.JOB_NAME}</b> completed <b>successfully</b>.</p>
+                                    <p><a href="${env.BUILD_URL}">Click here to view the build</a></p>
+                                </body>
+                            </html> """,
+                to: 'sagardeepak2002@gmail.com',
+                from: 'deepsagar0701@gmail.com',
+                replyTo: 'jenkins@example.com',
+                mimeType: 'text/html'
+            )
+        }
     }
 }
