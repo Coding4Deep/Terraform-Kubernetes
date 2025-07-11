@@ -2,13 +2,14 @@ variable "aws_region" {
   type    = string
   default = "us-east-1"
 }
-variable "vault_token" {
-  type      = string
-  sensitive = true
-}
-variable "vault_addr" {
-  type = string
-}
+
+# variable "vault_token" {
+#   type      = string
+#   sensitive = true
+# }
+# variable "vault_addr" {
+#   type = string
+# }
 
 
 # VPC VARIABLES
