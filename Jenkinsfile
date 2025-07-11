@@ -4,6 +4,7 @@ pipeline {
     triggers {
         githubPush()
     }   
+
     environment {
         // AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
         // AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
@@ -42,10 +43,11 @@ pipeline {
                 [envVar: 'AWS_ACCESS_KEY_ID', vaultKey: 'access_key'],
                 [envVar: 'AWS_SECRET_ACCESS_KEY', vaultKey: 'secret_key']
               ]]]
-            ) {
+            ){
               sh '''
                 terraform init
                 terraform plan -out=tfplan
+                terraform apply -auto-approve tfplan
               '''
             }
           }
