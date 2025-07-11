@@ -70,7 +70,7 @@ pipeline {
                                     <p style="font-size: 12px; color: #888;">This is an automated message sent by Jenkins CI server.</p>
                                 </div>
                             </body>
-                         </html>"""
+                         </html>""",
                 to: 'sagardeepak2002@gmail.com',
                 from: 'deepsagar0701@gmail.com',
                 replyTo: 'jenkins@example.com',
