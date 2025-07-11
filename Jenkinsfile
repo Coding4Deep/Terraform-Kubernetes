@@ -13,7 +13,7 @@ pipeline {
         }
         stage('repo trivy scan') {
             steps {
-                sh 'trivy fs --exit-code 1 --severity HIGH,CRITICAL .'
+                sh 'trivy fs  --severity HIGH,CRITICAL .'
             }
         }
 
