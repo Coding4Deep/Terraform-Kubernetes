@@ -4,6 +4,8 @@ pipeline {
     triggers {
         githubPush()
     }
+
+    
    
     stages{
         stage('Checkout') {
@@ -34,5 +36,18 @@ pipeline {
                 sh 'docker build -t deepaksag/k8s-spring:1.0.0 .'
             }
         }
+        stage('Build & Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker build -t $IMAGE:latest .
+                        docker push $IMAGE:latest
+                        docker logout
+                    '''
+                }
+            }
+        }
+
     }
 }
