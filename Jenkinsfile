@@ -54,7 +54,7 @@ pipeline {
    
 
     post {
-        success {
+        always {
             emailext(
                 subject: "✅ Jenkins Build SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """<html>
