@@ -37,7 +37,7 @@ pipeline {
           steps {
             withVault(
               configuration: [vaultUrl: "${VAULT_ADDR}", vaultCredentialId: 'vault-jenkins-token'],
-              vaultSecrets: [[path: 'aws-creds/myapp', secretValues: [
+              vaultSecrets: [[path: 'aws-creds/myapp',engineVersion: 1, secretValues: [
                 [envVar: 'AWS_ACCESS_KEY_ID', vaultKey: 'access_key'],
                 [envVar: 'AWS_SECRET_ACCESS_KEY', vaultKey: 'secret_key']
               ]]]
