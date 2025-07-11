@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MULTIDEV - User Tasks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d2d2d;
+        }
+
+        .admin-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .content-container {
+            margin: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-details h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .tasks-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .task-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .task-card.pending {
+            border-left-color: #ffc107;
+        }
+
+        .task-card.in-progress {
+            border-left-color: #17a2b8;
+        }
+
+        .task-card.completed {
+            border-left-color: #28a745;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .task-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .priority-badge, .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background: #dc3545;
+            color: white;
+        }
+
+        .priority-medium {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .priority-low {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-pending {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .status-in-progress {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .status-completed {
+            background: #28a745;
+            color: white;
+        }
+
+        .no-tasks {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-tasks i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="admin-title">
+            <h1><i class="fas fa-user-tasks"></i> User Tasks</h1>
+            <p>Tasks for <span th:text="${user.username}">User</span></p>
+        </div>
+        <div class="admin-nav">
+            <a href="/admin/users/details" class="nav-btn">
+                <i class="fas fa-arrow-left"></i> Back to Users
+            </a>
+            <a href="/admin/dashboard" class="nav-btn">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="user-info-card">
+            <div class="user-details">
+                <h2><i class="fas fa-user"></i> <span th:text="${user.username}">Username</span></h2>
+                <p><i class="fas fa-envelope"></i> <span th:text="${user.email}">user@email.com</span></p>
+            </div>
+            <div class="user-stats">
+                <div class="stat-item">
+                    <div class="stat-number" th:text="${totalTasks}">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" th:text="${pendingTasks}">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" th:text="${completedTasks}">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tasks-grid" th:if="${tasks != null and !tasks.isEmpty()}">
+            <div class="task-card" th:each="task : ${tasks}" 
+                 th:classappend="${task.status.toLowerCase().replace('_', '-')}">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title" th:text="${task.title}">Task Title</div>
+                        <div class="task-meta">
+                            <span><i class="fas fa-calendar"></i> <span th:text="${#temporals.format(task.createdAt, 'MMM dd, yyyy')}">Date</span></span>
+                            <span><i class="fas fa-clock"></i> <span th:text="${#temporals.format(task.createdAt, 'HH:mm')}">Time</span></span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-direction: column; align-items: flex-end;">
+                        <span class="priority-badge" th:classappend="'priority-' + ${task.priority.toLowerCase()}" 
+                              th:text="${task.priority}">Priority</span>
+                        <span class="status-badge" th:classappend="'status-' + ${task.status.toLowerCase().replace('_', '-')}" 
+                              th:text="${task.status.replace('_', ' ')}">Status</span>
+                    </div>
+                </div>
+                
+                <div class="task-description" th:text="${task.description}">Task description</div>
+            </div>
+        </div>
+
+        <div class="no-tasks" th:if="${tasks == null or tasks.isEmpty()}">
+            <i class="fas fa-inbox"></i>
+            <h3>No Tasks Found</h3>
+            <p>This user has no tasks assigned yet.</p>
+        </div>
+    </div>
+</body>
+</html>

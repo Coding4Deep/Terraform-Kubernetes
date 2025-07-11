@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# Maven
+target/
+!target/*.war
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Documentation
+README.md
+*.md
+
+# Docker
+Dockerfile*
+.dockerignore
+
+# Other
+sonar-project.properties

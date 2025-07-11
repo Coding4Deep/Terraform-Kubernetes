@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MULTIDEV - Manage Tasks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d2d2d;
+        }
+
+        .admin-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 30px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .content-container {
+            margin: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-summary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab:hover, .filter-tab.active {
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+        }
+
+        .tasks-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .task-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .task-card.pending {
+            border-left-color: #ffc107;
+        }
+
+        .task-card.in-progress {
+            border-left-color: #17a2b8;
+        }
+
+        .task-card.completed {
+            border-left-color: #28a745;
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .task-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .task-user {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-edit {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #e0a800;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        .priority-badge, .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background: #dc3545;
+            color: white;
+        }
+
+        .priority-medium {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .priority-low {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-pending {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .status-in-progress {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .status-completed {
+            background: #28a745;
+            color: white;
+        }
+
+        .no-tasks {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-tasks i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="admin-title">
+            <h1><i class="fas fa-tasks"></i> Manage Tasks</h1>
+            <p>Comprehensive task management and monitoring</p>
+        </div>
+        <div class="admin-nav">
+            <a href="/admin/dashboard" class="nav-btn">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <a href="/admin/users" class="nav-btn">
+                <i class="fas fa-users"></i> Manage Users
+            </a>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="stats-summary">
+            <div>
+                <h3><i class="fas fa-chart-bar"></i> Task Overview</h3>
+                <p>Total Tasks: <strong th:text="${totalTasks}">0</strong></p>
+            </div>
+            <div>
+                <a href="/admin/tasks/pending" style="color: white; text-decoration: none; margin-right: 15px;">
+                    <i class="fas fa-clock"></i> View Pending
+                </a>
+                <a href="/admin/tasks/completed" style="color: white; text-decoration: none;">
+                    <i class="fas fa-check"></i> View Completed
+                </a>
+            </div>
+        </div>
+
+        <div class="filter-tabs">
+            <a href="/admin/tasks" class="filter-tab active">
+                <i class="fas fa-list"></i> All Tasks
+            </a>
+            <a href="/admin/tasks/pending" class="filter-tab">
+                <i class="fas fa-clock"></i> Pending
+            </a>
+            <a href="/admin/tasks/in-progress" class="filter-tab">
+                <i class="fas fa-spinner"></i> In Progress
+            </a>
+            <a href="/admin/tasks/completed" class="filter-tab">
+                <i class="fas fa-check-circle"></i> Completed
+            </a>
+        </div>
+
+        <div class="tasks-grid" th:if="${tasks != null and !tasks.isEmpty()}">
+            <div class="task-card" th:each="task : ${tasks}" 
+                 th:classappend="${task.status.toLowerCase().replace('_', '-')}">
+                <div class="task-header">
+                    <div>
+                        <div class="task-title" th:text="${task.title}">Task Title</div>
+                        <div class="task-meta">
+                            <span><i class="fas fa-calendar"></i> <span th:text="${#temporals.format(task.createdAt, 'MMM dd, yyyy')}">Date</span></span>
+                            <span><i class="fas fa-clock"></i> <span th:text="${#temporals.format(task.createdAt, 'HH:mm')}">Time</span></span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-direction: column; align-items: flex-end;">
+                        <span class="priority-badge" th:classappend="'priority-' + ${task.priority.toLowerCase()}" 
+                              th:text="${task.priority}">Priority</span>
+                        <span class="status-badge" th:classappend="'status-' + ${task.status.toLowerCase().replace('_', '-')}" 
+                              th:text="${task.status.replace('_', ' ')}">Status</span>
+                    </div>
+                </div>
+                
+                <div class="task-description" th:text="${task.description}">Task description</div>
+                
+                <div class="task-user">
+                    <strong><i class="fas fa-user"></i> Assigned to:</strong><br>
+                    <span>User ID: <span th:text="${task.userId}">User ID</span></span>
+                </div>
+
+                <div class="task-actions">
+                    <button class="action-btn btn-edit" onclick="editTask(this)" th:data-task-id="${task.id}">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="action-btn btn-delete" onclick="deleteTask(this)" th:data-task-id="${task.id}">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-tasks" th:if="${tasks == null or tasks.isEmpty()}">
+            <i class="fas fa-inbox"></i>
+            <h3>No Tasks Found</h3>
+            <p>There are currently no tasks in the system.</p>
+        </div>
+    </div>
+
+    <script>
+        function editTask(button) {
+            const taskId = button.getAttribute('data-task-id');
+            // Implement edit functionality
+            alert('Edit task functionality - Task ID: ' + taskId);
+        }
+
+        function deleteTask(button) {
+            const taskId = button.getAttribute('data-task-id');
+            if (confirm('Are you sure you want to delete this task?')) {
+                fetch(`/admin/tasks/${taskId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content'),
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error deleting task: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error deleting task: ' + error.message);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
