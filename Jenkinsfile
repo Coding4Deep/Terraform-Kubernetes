@@ -29,5 +29,10 @@ pipeline {
                 }
             }
         }
+        stage('DockerImage Build') {
+            steps {
+                sh 'docker build -t deepaksag/k8s-spring:1.0.0 .'
+            }
+        }
     }
 }
