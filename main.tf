@@ -14,19 +14,19 @@ terraform {
   }
 }
 
-provider "vault" {
-  # address         = var.vault_addr
-  # token           = var.vault_token
-  skip_tls_verify = true
-}
+# provider "vault" {
+#   # address         = var.vault_addr
+#   # token           = var.vault_token
+#   skip_tls_verify = true
+# }
 
-data "vault_generic_secret" "aws_creds" {
-  path = "aws-creds/myapp"
-}
+# data "vault_generic_secret" "aws_creds" {
+#   path = "aws-creds/myapp"
+# }
 
 provider "aws" {
-  access_key = data.vault_generic_secret.aws_creds.data["access_key"]
-  secret_key = data.vault_generic_secret.aws_creds.data["secret_key"]
+  # access_key = data.vault_generic_secret.aws_creds.data["access_key"]
+  # secret_key = data.vault_generic_secret.aws_creds.data["secret_key"]
   region     = var.aws_region
 }
 
