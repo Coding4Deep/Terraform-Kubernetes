@@ -1,0 +1,42 @@
+---
+- name: change hostname on master node
+  hosts: master
+  become: true
+
+  vars:
+    new_hostname: master
+
+  tasks:
+    - name: change hostname
+      ansible.builtin.hostname:
+        name: "{{ new_hostname }}"
+      when: new_hostname is defined
+
+- name: change hostname on worker-01 node
+  hosts: worker_01
+  become: true
+
+  vars:
+    new_hostname: worker-01
+
+  tasks:
+    - name: change hostname
+      ansible.builtin.hostname:
+        name: "{{ new_hostname }}"
+      when: new_hostname is defined
+
+- name: change hostname on worker-02 node
+  hosts: worker_02
+  become: true
+
+  vars:
+    new_hostname: worker-02
+
+  tasks:
+    - name: change hostname
+      ansible.builtin.hostname:
+        name: "{{ new_hostname }}"
+      when: new_hostname is defined
+
+
+
