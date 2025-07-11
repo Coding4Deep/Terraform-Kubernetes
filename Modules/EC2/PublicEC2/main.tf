@@ -47,7 +47,19 @@ resource "null_resource" "copy_pem_to_master" {
       "chown ubuntu:ubuntu /home/ubuntu/${var.pem_file_name}.pem"
     ]
   }
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
