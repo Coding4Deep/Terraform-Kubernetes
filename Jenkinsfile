@@ -1,9 +1,9 @@
 pipeline{
     agent { label 'worker-01 '}
 
-    triggers {
-        githubPush()
-    }
+    // triggers {
+    //     githubPush()
+    // }
    
     environment {
         AWS_CREDS = credentials('aws-iam-creds')
