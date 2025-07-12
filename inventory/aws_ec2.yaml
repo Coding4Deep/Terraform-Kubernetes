@@ -15,6 +15,9 @@ compose:
       "-o ProxyCommand='ssh -o StrictHostKeyChecking=no -i ~/k8s-project-key.pem -W %h:%p ubuntu@{{ hostvars[(groups['master'] | list)[0]].ansible_host }}'",
       ""
     )
+  
+  # Make private IP available for kubeadm configuration
+  private_ip_address: private_ip_address
 
 keyed_groups:
   - key: tags.Name

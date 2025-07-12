@@ -1,6 +1,6 @@
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: ClusterConfiguration
 kubernetesVersion: stable
-controlPlaneEndpoint: "{{ ansible_host }}:6443"
+controlPlaneEndpoint: "{{ hostvars[inventory_hostname]['private_ip_address'] }}:6443"
 networking:
   podSubnet: "10.244.0.0/16"
