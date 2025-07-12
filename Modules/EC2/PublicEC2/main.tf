@@ -19,6 +19,17 @@ resource "aws_instance" "public_ec2" {
   }
 }
 
+resource "aws_eip" "public_ip" {
+  for_each = var.public_instances
+
+  instance = aws_instance.public_ec2[each.key].id
+  domain   = "vpc" 
+  tags = {
+    Name    = "${each.key}-eip"
+    project = "kubernetes"
+  }
+}
+
 
 
 # COPY PEM FILE TO THE MASTER EC2 ONLY 
