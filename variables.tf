@@ -1,6 +1,6 @@
 variable "aws_region" {
   type    = string
-  default = "us-east-2"
+  default = "us-east-1"
 }
 
 # variable "vault_token" {
@@ -29,7 +29,7 @@ variable "public_subnet_cidr_block" {
 }
 variable "public_subnet_az" {
   type    = string
-  default = "us-east-2a"
+  default = "us-east-1a"
 }
 
 # PRIVATE SUBNET VARIABLES
@@ -39,7 +39,7 @@ variable "private_subnet_cidr_block" {
 }
 variable "private_subnet_az" {
   type    = string
-  default = "us-east-2a"
+  default = "us-east-1a"
 }
 
 # SECURITY GROUP VARIABLES
@@ -84,7 +84,7 @@ variable "public_instances" {
   }))
   default = {
     master = {
-      ami           = "ami-0b05d988257befbbe" 
+      ami           = "ami-0a7d80731ae1b2435" 
       instance_type = "t2.medium"
     }
   }
@@ -99,11 +99,11 @@ variable "private_instances" {
   }))
   default = {
     worker-01 = {
-      ami           = "ami-0b05d988257befbbe" 
+      ami           = "ami-0a7d80731ae1b2435" 
       instance_type = "t2.large"
     },
     worker-02 = {
-      ami           = "ami-0b05d988257befbbe" 
+      ami           = "ami-0a7d80731ae1b2435" 
       instance_type = "t2.large"
     }
   }
