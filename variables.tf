@@ -29,7 +29,7 @@ variable "public_subnet_cidr_block" {
 }
 variable "public_subnet_az" {
   type    = string
-  default = "us-east-1a"
+  default = "us-east-2a"
 }
 
 # PRIVATE SUBNET VARIABLES
@@ -39,7 +39,7 @@ variable "private_subnet_cidr_block" {
 }
 variable "private_subnet_az" {
   type    = string
-  default = "us-east-1a"
+  default = "us-east-2a"
 }
 
 # SECURITY GROUP VARIABLES
