@@ -23,14 +23,16 @@ spec:
               protocol: TCP
           resources:
             requests: 
-              memory: {{ .Values.requests.memory }}
-              cpu: {{ .Values.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+              cpu: {{ .Values.resources.requests.cpu }}
             limits:
-              memory: {{ .Values.limits.memory }}
-              cpu: {{ .Values.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+              cpu: {{ .Values.resources.limits.cpu }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchLabels:
                   {{- include "spring-app.labels" . | nindent 18 }}
+              topologyKey: kubernetes.io/hostname
+

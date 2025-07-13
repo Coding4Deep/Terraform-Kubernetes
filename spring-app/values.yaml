@@ -9,6 +9,7 @@ labels:
   
 containerName: spring-app-container
 image: deepaksag/k8s-spring:latest
+
 service:
   type: NodePort
   port: 8080
