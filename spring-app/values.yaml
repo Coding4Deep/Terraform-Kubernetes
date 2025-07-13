@@ -1,0 +1,24 @@
+deploy_name: spring-app
+namespace: spring
+replicas: 2
+
+labels:
+  app: spring-app
+  env: prod
+  version: v1
+  
+containerName: spring-app-container
+image: deepaksag/k8s-spring:latest
+service:
+  type: NodePort
+  port: 8080
+  targetPort: 8080
+  nodePort: 30080
+  
+resources:
+  requests: 
+    memory: "500Mi"
+    cpu: "500m"
+  limits:
+    memory: "1Gi"
+    cpu: "1"

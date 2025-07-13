@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deploy_name }}
+  namespace: {{ include "namespaceName" . }}
+  labels:
+    {{- include "spring-app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.labels.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.labels.app }}
+    spec:
+      containers:
+        - name: {{ .Values.containerName }}
+          image: {{ .Values.image }}
+          ports: 
+            - containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          resources:
+            requests: 
+              memory: {{ .Values.requests.memory }}
+              cpu: {{ .Values.requests.cpu }}
+            limits:
+              memory: {{ .Values.limits.memory }}
+              cpu: {{ .Values.limits.cpu }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  {{- include "spring-app.labels" . | nindent 18 }}
