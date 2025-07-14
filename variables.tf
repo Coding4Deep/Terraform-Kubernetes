@@ -104,7 +104,7 @@ variable "private_instances" {
     },
     worker-02 = {
       ami           = "ami-0a7d80731ae1b2435" 
-      instance_type = "t2.medium"
+      instance_type = "t2.large"
     }
   }
 }
