@@ -66,12 +66,12 @@ variable "pem_file_name" {
 variable "volume_size" {
   description = "Size of the root volume in GB"
   type        = number
-  default     = 20 
+  default     = 30  
 } 
 variable "volume_type" {
   description = "Type of the root volume"
   type        = string
-  default     = "gp3"
+  default     = "gp2"
 }
 
 
