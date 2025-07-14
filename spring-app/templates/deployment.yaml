@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.deploy_name }}
+  name: {{ .Values.deployName }}
   namespace: {{ include "namespaceName" . }}
   labels:
     {{- include "spring-app.labels" . | nindent 4 }}

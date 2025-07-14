@@ -1,4 +1,5 @@
-deploy_name: spring-app
+deployName: spring-app
+serviceName: spring-svc
 namespace: spring
 replicas: 2
 
@@ -23,3 +24,5 @@ resources:
   limits:
     memory: "1Gi"
     cpu: "1"
+
+

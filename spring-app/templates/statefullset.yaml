@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.statefulsetName }}
+  namespace: {{ include "namespaceName" . }}
+  labels:
+    {{- include "spring-app.labels" . | nindent 4 }}
+
+spec: 
+replicas: {{ .Values.statefulset.replica }}
+  serviceName: {{ .Values.serviceName }}
+  selector:
+    matchLabels:
+      {{  }}
+
+  
