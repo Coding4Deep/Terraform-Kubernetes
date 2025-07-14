@@ -6,12 +6,12 @@ terraform {
     }
   }
   required_version = ">= 0.12"
-  backend "s3" {
-    bucket  = "k8s-terra-project-bucket"
-    key     = "terraform/state"
-    region  = "us-east-1"
-    encrypt = true
-  }
+  # backend "s3" {
+  #   bucket  = "k8s-terra-project-bucket"
+  #   key     = "terraform/state"
+  #   region  = "us-east-1"
+  #   encrypt = true
+  # }
 }
 
 # provider "vault" {
