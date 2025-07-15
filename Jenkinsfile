@@ -1,55 +1,40 @@
-pipeline{
-    agent { label 'worker-01 '}
+pipeline {
+    agent any
 
-    // triggers {
-    //     githubPush()
-    // }
-   
+    triggers {
+        githubPush()
+    }   
+
     environment {
-        AWS_CREDS = credentials('aws-iam-creds')
         AWS_DEFAULT_REGION    = 'us-east-1'
+        VAULT_ADDR            = credentials('vault_addr')
     }
-
-    stages{
+    stages {
         stage('Checkout') {
             steps {
                 git branch: 'ansible', url: 'https://github.com/Coding4Deep/Terraform-Kubernetes.git'
             }
         }
-        stage('Ansible Inventory') {
-            steps {
-                sh 'ansible-inventory --graph'
+        stage('Terraform Apply') {
+          steps {
+            withVault(
+              configuration: [vaultUrl: "${VAULT_ADDR}", vaultCredentialId: 'vault-jenkins-token'],
+              vaultSecrets: [[path: 'aws-creds/myapp',engineVersion: 1, secretValues: [
+                [envVar: 'AWS_ACCESS_KEY_ID', vaultKey: 'access_key'],
+                [envVar: 'AWS_SECRET_ACCESS_KEY', vaultKey: 'secret_key']
+              ]]]
+            ){
+              sh '''
+                 ansibleansible-inventory --graph
+                //  ansible-playbook  playbooks/hostname_change.yml
+                //  ansible-playbook  playbooks/docker_install.yml
+                //  ansible-playbook  playbooks/k8s_configure.yml
+                //  ansible-playbook  playbooks/k8s_components.yml
+                //  ansible-playbook  playbooks/kubeadm_init.yml
+                //  ansible-playbook  playbooks/kubeadm_join.yml                
+              '''
             }
-        }
-        stage('Change Hostname of all node') {
-            steps {
-                sh 'ansible-playbook  playbooks/hostname_change.yml'
-            }
-        }
-        stage('Docker Installation') {
-            steps {
-                sh 'ansible-playbook  playbooks/docker_install.yml'
-            }
-        }
-        stage('Kubernetes pre-requisites and configuration') {
-            steps {
-                sh 'ansible-playbook  playbooks/k8s_configure.yml'
-            }
-        }
-        stage('Kubernetes components Installation') {
-            steps {
-                sh 'ansible-playbook  playbooks/k8s_components.yml'
-            }
-        }
-        stage('Kubernetes init') {
-            steps {
-                sh 'ansible-playbook  playbooks/kubeadm_init.yml'
-            }
-        }
-        stage('Kubernetes joining nodes') {
-            steps {
-                sh 'ansible-playbook  playbooks/kubeadm_join.yml'
-            }
+          }
         }
         stage('check kubernetes nodes') {
             steps {
