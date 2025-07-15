@@ -26,12 +26,12 @@ pipeline {
             ){
               sh '''
                  ansible-inventory --graph
-                //  ansible-playbook  playbooks/hostname_change.yml
-                //  ansible-playbook  playbooks/docker_install.yml
-                //  ansible-playbook  playbooks/k8s_configure.yml
-                //  ansible-playbook  playbooks/k8s_components.yml
-                //  ansible-playbook  playbooks/kubeadm_init.yml
-                //  ansible-playbook  playbooks/kubeadm_join.yml                
+                 ansible-playbook  playbooks/hostname_change.yml
+                 ansible-playbook  playbooks/docker_install.yml
+                 ansible-playbook  playbooks/k8s_configure.yml
+                 ansible-playbook  playbooks/k8s_components.yml
+                 ansible-playbook  playbooks/kubeadm_init.yml
+                 ansible-playbook  playbooks/kubeadm_join.yml                
               '''
             }
           }
