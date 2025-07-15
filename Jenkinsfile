@@ -42,5 +42,16 @@ pipeline {
                 sh 'ansible master -m shell -a "kubectl get nodes"'
             }
         }
+        stage('Terraform Apply') {
+            steps {
+                withCredentials([file(credentialsId: 'terraform-vars', variable: 'TFVARS')]) {
+                    sh '''
+                      terraform --version          # optional
+                      terraform init
+                      terraform plan-var-file="$TFVARS"
+                    '''
+                }
+            }
+        }
     }
 }
