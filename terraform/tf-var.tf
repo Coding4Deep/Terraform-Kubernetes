@@ -1,6 +1,0 @@
-requester_access_key  = "AKIA...REQ"
-requester_secret_key  = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-acceptor_access_key   = "AKIA...ACC"
-acceptor_secret_key   = "yyyyyyyyyyyyyyyyyyyyyyyyyyyy"
-acceptor_vpc_name     = "k8s-project-vpc"
-acceptor_account_id   = "123456789012"

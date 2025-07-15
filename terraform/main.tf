@@ -91,7 +91,7 @@ resource "aws_vpc_peering_connection" "peering" {
   vpc_id        = data.aws_vpc.default.id
   peer_vpc_id   = data.aws_vpc.k8s_project.id
   peer_owner_id = var.acceptor_account_id # Replace with actual Account B ID
-  auto_accept   = true
+  auto_accept   = false
 
   tags = {
     Name = "default-to-k8s-peering"
