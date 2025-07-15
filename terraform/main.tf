@@ -57,12 +57,10 @@
 
 
 
-
-
 provider "aws" {
   alias  = "requester"
   region = "us-east-1"
-  access_key =  var.requester_access_key
+  access_key = var.requester_access_key
   secret_key = var.requester_secret_key
 }
 
