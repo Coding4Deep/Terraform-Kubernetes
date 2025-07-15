@@ -25,7 +25,7 @@ pipeline {
               ]]]
             ){
               sh '''
-                 ansibleansible-inventory --graph
+                ansible-inventory --graph
                 //  ansible-playbook  playbooks/hostname_change.yml
                 //  ansible-playbook  playbooks/docker_install.yml
                 //  ansible-playbook  playbooks/k8s_configure.yml
@@ -36,11 +36,11 @@ pipeline {
             }
           }
         }
-        stage('check kubernetes nodes') {
-            steps {
-                sh 'sleep 30'
-                sh 'ansible master -m shell -a "kubectl get nodes"'
-            }
-        }
+        // stage('check kubernetes nodes') {
+        //     steps {
+        //         sh 'sleep 30'
+        //         sh 'ansible master -m shell -a "kubectl get nodes"'
+        //     }
+        // }
     }
 }
