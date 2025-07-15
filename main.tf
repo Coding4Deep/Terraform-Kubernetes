@@ -30,9 +30,9 @@ provider "aws" {
   region     = var.aws_region
 }
 
-module "S3" {
-  source = "./Modules/S3"
-}
+# module "S3" {
+#   source = "./Modules/S3"
+# }
 
 module "VPC" {
   source         = "./Modules/VPC"
