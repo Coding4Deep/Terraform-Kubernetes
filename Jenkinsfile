@@ -9,13 +9,13 @@ pipeline {
         AWS_DEFAULT_REGION    = 'us-east-1'
         VAULT_ADDR            = credentials('vault_addr')
     }
-    stages {
+    stages{
         stage('Checkout') {
             steps {
                 git branch: 'ansible', url: 'https://github.com/Coding4Deep/Terraform-Kubernetes.git'
             }
         }
-        stage('Terraform Apply') {
+        stage('Ansible Playbook') {
           steps {
             withVault(
               configuration: [vaultUrl: "${VAULT_ADDR}", vaultCredentialId: 'vault-jenkins-token'],
@@ -45,10 +45,9 @@ pipeline {
         stage('Terraform Apply') {
             steps {
                 withCredentials([file(credentialsId: 'terraform-vars', variable: 'TFVARS')]) {
-                    sh '''
-                      terraform --version          # optional
+                    sh '''        
                       terraform init
-                      terraform plan-var-file="$TFVARS"
+                      terraform plan -var-file="$TFVARS"
                     '''
                 }
             }
