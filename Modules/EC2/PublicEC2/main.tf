@@ -58,7 +58,7 @@ resource "null_resource" "copy_pem_to_master" {
     inline = [
       "echo 'Waiting for instance to be ready...'",
       "until [ -f /var/lib/cloud/instance/boot-finished ]; do sleep 2; done",
-      "echo 'Instance is ready!'"
+      "echo 'Instance is ready !'"
     ]
   }
 

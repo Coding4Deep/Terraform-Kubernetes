@@ -29,15 +29,15 @@ pipeline {
               sh '''
                 terraform init
                 terraform plan 
-                terraform destroy --auto-approve
+                terraform apply --auto-approve
               '''
             }
           }
         }
     }
-  post {
-    success {
-      build job: 'ansible'
-    }
-  }
+  // post {
+  //   success {
+  //     build job: 'ansible'
+  //   }
+  // }
 }
