@@ -26,7 +26,12 @@ pipeline {
             ){
               sh '''
                  ansible-inventory --graph
-                            
+                 ansible-playbook  playbooks/hostname_change.yml
+                 ansible-playbook  playbooks/docker_install.yml
+                 ansible-playbook  playbooks/k8s_configure.yml
+                 ansible-playbook  playbooks/k8s_components.yml
+                 ansible-playbook  playbooks/kubeadm_init.yml
+                 ansible-playbook  playbooks/kubeadm_join.yml                
               '''
             }
           }
@@ -40,9 +45,8 @@ pipeline {
         stage('Terraform Apply') {
             steps {
                 withCredentials([file(credentialsId: 'terraform-vars', variable: 'TFVARS')]) {
-                    sh '''        
-                      terraform init -upgrade
-                      terraform plan -var-file="$TFVARS"
+                    sh '''    
+                    cd terraform && terraform init -upgrade && terraform plan -var-file="$TFVARS"
                     '''
                 }
             }
