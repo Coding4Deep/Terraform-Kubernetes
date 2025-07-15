@@ -1,12 +1,16 @@
 ---
 - name: Ensure ~/.kube dir exists on Ansible controller
   hosts: localhost
+  become: yes
   tasks:
-    - name: Create .kube directory
+    - name: Create .kube directory for ubuntu user
       file:
         path: /home/ubuntu/.kube
         state: directory
+        owner: ubuntu
+        group: ubuntu
         mode: '0755'
+
 
 
 - name: Generate kubeadm init
