@@ -46,7 +46,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'terraform-vars', variable: 'TFVARS')]) {
                     sh '''    
-                    cd terraform && terraform init && terraform plan -var-file="$TFVARS"
+                    cd terraform && terraform init && terraform plan -var-file="$TFVARS && terraform apply --auto-approve -var-file="$TFVARS"
                     '''
                 }
             }
