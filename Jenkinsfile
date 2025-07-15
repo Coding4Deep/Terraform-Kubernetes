@@ -42,12 +42,24 @@ pipeline {
                 sh 'ansible master -m shell -a "kubectl get nodes"'
             }
         }
-        stage('Terraform Apply') {
+        stage('Ansible Playbook') {
             steps {
                 withCredentials([file(credentialsId: 'terraform-vars', variable: 'TFVARS')]) {
-                    sh '''    
-                    cd terraform && terraform init && terraform plan -var-file="$TFVARS" && terraform apply --auto-approve -var-file="$TFVARS"
-                    '''
+                    withVault(
+                      configuration: [vaultUrl: "${VAULT_ADDR}", vaultCredentialId: 'vault-jenkins-token'],
+                      vaultSecrets: [[
+                        path: 'aws-creds/myapp',
+                        engineVersion: 1,
+                        secretValues: [
+                          [envVar: 'AWS_ACCESS_KEY_ID', vaultKey: 'access_key'],
+                          [envVar: 'AWS_SECRET_ACCESS_KEY', vaultKey: 'secret_key']
+                        ]
+                      ]]
+                    ) {
+                      sh '''
+                        cd terraform && terraform init && terraform plan -var-file="$TFVARS" && terraform apply --auto-approve -var-file="$TFVARS"
+                      '''
+                    }
                 }
             }
         }
