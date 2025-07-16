@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.StatefulSet.name}}
+  labels:
+  {{- include "spring-app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.StatefulSet.replicas }}
+  selector:
+    matchLabels:
+    {{ .Values.labels.app | nindent 4 }}
+  serviceName: {{ .Values.StatefulSet.service.name }}
+  terminationGracePeriodSeconds: 10
+  template:
+    metadata:
+      labels:
+        {{ .Values.labels.app | nindent 6 }}
+    spec:
+      containers:
+      - name: {{ .Values.StatefulSet.containerName }}
+        image: {{ .Values.StatefulSet.image }}
+        ports:
+        - name: {{ .Values.StatefulSet.ports.port1 }}
+          containerPort: {{ .Values.StatefulSet.ports.port1Value }}
+        volumeMounts:
+        - name: mongo-vol
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.StatefulSet.volumeName }}

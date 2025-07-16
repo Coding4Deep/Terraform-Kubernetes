@@ -1,0 +1,41 @@
+---
+- name: Setup NFS Server (on Ansible Controller)
+  hosts: localhost
+  become: true
+  vars:
+    kubernetes_cidr_block: "10.0.0.0/16"  # Replace with your k8s nodes's vpc cidr block
+  tasks:
+    - name: Install NFS server packages
+      apt:
+        name: nfs-kernel-server
+        state: present
+        update_cache: true
+
+    - name: Create NFS export directory
+      file:
+        path: /mnt/kubedata
+        state: directory
+        owner: nobody
+        group: nogroup
+        mode: '0777'
+
+    - name: Ensure /etc/exports has NFS export rule for Kubernetes nodes
+      lineinfile:
+        path: /etc/exports
+        line: "/mnt/kubedata {{ kubernetes_cidr_block }}(rw,sync,no_subtree_check,no_root_squash)"
+        state: present
+        create: yes
+
+    - name: Export the NFS share
+      command: exportfs -rav
+      register: exportfs_output
+
+    - name: Print exportfs result
+      debug:
+        var: exportfs_output.stdout_lines
+
+    - name: Ensure NFS server is enabled and restarted
+      service:
+        name: nfs-kernel-server
+        state: restarted
+        enabled: yes

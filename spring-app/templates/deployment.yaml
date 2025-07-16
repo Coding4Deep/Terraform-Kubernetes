@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.deployName }}
+  name: {{ .Values.deployment.name }}
   namespace: {{ include "namespaceName" . }}
-  labels:
-    {{- include "spring-app.labels" . | nindent 4 }}
+  labels:{{- include "spring-app.labels" . | nindent 4 }}
+    
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.deployment.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.labels.app }}
@@ -15,19 +15,21 @@ spec:
       labels:
         app: {{ .Values.labels.app }}
     spec:
+      imagePullSecrets: 
+        - name: {{ .Values.imagePullSecretName | quote }}
       containers:
-        - name: {{ .Values.containerName }}
-          image: {{ .Values.image }}
+        - name: {{ .Values.deployment.containerName }}
+          image: {{ .Values.deployment.image }}
           ports: 
-            - containerPort: {{ .Values.service.targetPort }}
+            - containerPort: {{ .Values.deployment.service.targetPort }}
               protocol: TCP
           resources:
             requests: 
-              memory: {{ .Values.resources.requests.memory }}
-              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.deployment.resources.requests.memory }}
+              cpu: {{ .Values.deployment.resources.requests.cpu }}
             limits:
-              memory: {{ .Values.resources.limits.memory }}
-              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.deployment.resources.limits.memory }}
+              cpu: {{ .Values.deployment.resources.limits.cpu }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

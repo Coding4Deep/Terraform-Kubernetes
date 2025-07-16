@@ -1,0 +1,33 @@
+---
+- name: Setup NFS Client (Kubeadm Master Node)
+  hosts: all
+  become: true
+  vars:
+    nfs_server_ip: 172.31.86.224  # Replace with your Ansible controller's private IP
+  tasks:
+    - name: Install NFS client package
+      apt:
+        name: nfs-common
+        state: present
+        update_cache: true
+
+    - name: Create mount point
+      file:
+        path: /mnt/kubedata
+        state: directory
+
+    - name: Mount NFS share
+      mount:
+        src: "{{ nfs_server_ip }}:/mnt/kubedata"
+        path: /mnt/kubedata
+        fstype: nfs
+        opts: defaults
+        state: mounted
+
+    - name: Make mount persistent
+      mount:
+        src: "{{ nfs_server_ip }}:/mnt/kubedata"
+        path: /mnt/kubedata
+        fstype: nfs
+        opts: defaults
+        state: present

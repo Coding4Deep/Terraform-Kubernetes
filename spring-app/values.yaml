@@ -1,28 +1,60 @@
-deployName: spring-app
-serviceName: spring-svc
 namespace: spring
-replicas: 2
 
 labels:
-  app: spring-app
-  env: prod
+  app: spring-mongo
+  env: dev
   version: v1
-  
-containerName: spring-app-container
-image: deepaksag/k8s-spring:latest
 
-service:
-  type: NodePort
-  port: 8080
-  targetPort: 8080
-  nodePort: 30080
-  
-resources:
-  requests: 
-    memory: "500Mi"
-    cpu: "500m"
-  limits:
-    memory: "1Gi"
-    cpu: "1"
+deployment:
+  name: spring-app
+  replicas: 2
+  containerName: spring-app-container
+  image: deepaksag/private-springapp:latest
+  resources:
+    requests: 
+      memory: "500Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  service:
+    name: spring-svc
+    type: NodePort
+    port: 8080
+    targetPort: 8080
+    nodePort: 30080
+
+dockerconfigjson: ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogIlpHVmxjR0ZyYzJGbk9tUmphM0pmY0dGMFh6SnRSMVV6VmpoNlkwdE1UVUZOWVZWS1RVRnZXblZaWldwVVl3PT0iCgkJfSwKCQkiaHR0cHM6Ly9pbmRleC5kb2NrZXIuaW8vdjEvYWNjZXNzLXRva2VuIjogewoJCQkiYXV0aCI6ICJaR1ZsY0dGcmMyRm5PbVY1U21oaVIyTnBUMmxLVTFWNlNURk9hVWx6U1c1U05XTkRTVFpKYTNCWVZrTkpjMGx0ZEhCYVEwazJTVzVvV1dFelFrTmtSRTU1VmpOTmVWSjVNVEZaYW14elkwVndibU5UU2prdVpYbEtiMlJJVW5kamVtOTJUREpvTVZscE5XdGlNazV5V2xoSmRWa3lPWFJKYW5BM1NXMVdkRmxYYkhOSmFtOXBZekpHYmxsWVNtdGFWMVozV1ZkemVVMUVRWGxSUjJSMFdWZHNjMHh0VG5aaVUwbHpTVzVPYkdNelRuQmlNalZtWVZkUmFVOXBTbXhOUkdocFRsUnJNVTVETUhkWlZFRjZURlJTYkZwcVRYUlpiVVV3V1dreGJWbFVVbWhhUkZVMVQxZEZORTVxVldsTVEwcDZZak5XZVZreVZXbFBhVXB1WVZoU2IyUlhTV2xNUTBveFl6SldlV0p0Um5SYVUwazJTVzFTYkZwWVFtaGhNMDVvV25sSmMwbHVWakZoVjFGcFQybEpNazlVYXpCT1IwazFXVk13TTA1WFZYcE1WRkY2VFcxUmRFOVhVVEZPZVRGc1drUkJkMDFFU1RWYVYwNW9XbFJGYVdaVGQybGhXRTU2U1dwdmFXRklVakJqU0UwMlRIazVjMkl5WkhCaWFUVnJZakpPY2xwWVNYVlpNamwwVEhsSmMwbHVUakZaYVVrMlNXMUdNV1JIWjNkbVJGazFUMVJSTUZscWJHaE1WR014V2xSTmRFNUVUWGxhUXpBMVdrUlZNMHhYVm10TlJFRjNUV3BzYkZreVJteE5VMGx6U1cxR01WcERTVFpYZVVwdlpFaFNkMk42YjNaTU1tZ3hXV2sxYTJJeVRuSmFXRWwxV1RJNWRFbHBkMmxoU0ZJd1kwaE5Oa3g1T1d0aU1rNXlXbGhKZEdOSVNuWmFRelV4WTNrMWFHUllVbTlOUXpWcVlqSXdkbVJZVG14amJXeDFXbTA0YVZoVGQybGhWMFl3U1dwdmVFNTZWWGxPYWxWNVRWUlJORXhEU214bFNFRnBUMnBGTTA1VVNUSk9WRlV6VGtSbmMwbHVUbXBpTTBKc1NXcHZhV0l6UW14aWJXeHJTVWM1YlZwdGVIQmliVlptV1ZkT2FscFlUbnBKYVhkcFdWaHdkMGxxYjJsVVJGSXlUVWRTZEdKRk5VTmpSbXhXWVd0a1NGbFhTWGRSZWtwTFpFZGtWVm94YUhsTlZrWTJUa2RSYVdaUkxsUkZORzl6WjNoWFNGTnNNa0ZyTmpWVkxVb3lMVWhyVm1kS1FsOXpkbFpZUTNOdU9XWTJiMncyUlZaQk9XazNiSE5XUmtwM1RIYzBjR2RuZUZSSk4xRlNTR1ZhU2xOcE1HaEdSRlJOWmxGNll6ZFJlVFJtVlVvNFEybHZlRU5RY0c5aGJrcENTRVJYZG1OelYwVXRTakpzWlcxc1kyVllOMFl5VmtOUWNISkRTV2htZFVOS1dWTkpSRzg1VW5SbFpFZFlPR1pKT0hJd1RuRXdlVTVPVUdwV1NGQk9lbUZvUjE4eVIwVklRM2hQVVd0VlFsRjBkekpTYjIxelRqRkhlbDkxVjBaQk1VMDVRbkpOWjA1ZmIySjNNMlJuZVdwa1UzUkxjV2hIVUZRMlZFNUtZalZtUVdsaFpHZGhVVXBQT0RSUFVFdHhWM05TVldJNFdGUm5Semx5VVhadlFWTktSMDA0ZDBGeGFXdFVUVlJHVlZNNE9FOWZibkY0V1V4WFRXb3hPRk0wVVVKZmIwMVVNbHBwWkhkSFNHZFFlSGxwYm5NNFVXNXNXVFpWWW1oQ1UxTmlRbGRCVjFWbWVVMXBWMmhEU0dReVFRPT0iCgkJfSwKCQkiaHR0cHM6Ly9pbmRleC5kb2NrZXIuaW8vdjEvcmVmcmVzaC10b2tlbiI6IHsKCQkJImF1dGgiOiAiWkdWbGNHRnJjMkZuT25ZeExrMVROV2x5VURndGFqbEZkVkJtZURWRWFGRkpVbEZFY0RneGNHVmpMVFp0TVhabFVuaEJkbXBqVDNSdlExRlViM2c0YVY5MFJUTk9PVFJuY1dGS1lVdG9PRzFSVFc1MlprZDZOVE5GVm1sT1lWaG5UMXB2YXk0dVREUjJNR1J0YkU1Q2NGbFZha2RIWVdJd1F6SktkR2RVWjFoeU1WRjZOR1E9IgoJCX0KCX0KfQ==
+imagePullSecretName: regcred
 
 
+PV:
+  name: spring-pv
+  storage: 5Gi
+  volumeMode: Filesystem
+  accessModes: ReadWriteMany
+  reclaimPolicy: Retain
+  pv_label:
+     pv: spring-pv
+    
+nfs:
+  server: 172.31.86.224
+  path: /mnt/kubeadm
+
+PVC:
+  name: spring-PVC
+  storage: 5Gi
+  pvc_label:
+    pvc:  spring-pvc
+
+StatefulSet:
+  name: mongo-set
+  replicas: 3
+  service:
+    name: mongo-svc
+  containerName: mongo-cont
+  image:  mongo:4.4
+  ports:
+    port1: mongo-port
+    port1Value: 27017
+  volumeName: mongo-vol

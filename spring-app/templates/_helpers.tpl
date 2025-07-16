@@ -17,8 +17,8 @@ Generate a full name: release-name + chart name (e.g., spring-app-myapp)
 Define optional nodePort for Service
 */}}
 {{- define "spring-app.nodePort" -}}
-{{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) .Values.service.nodePort }}
-nodePort: {{ .Values.service.nodePort }}
+{{- if and (or (eq .Values.deployment.service.type "NodePort") (eq .Values.deployment.service.type "LoadBalancer")) .Values.deployment.service.nodePort }}
+nodePort: {{ .Values.deployment.service.nodePort }}
 {{- end }}
 {{- end }}
 
@@ -27,8 +27,16 @@ nodePort: {{ .Values.service.nodePort }}
 Custom + common labels
 */}}
 {{- define "spring-app.labels" -}}
-app.kubernetes.io/name: {{ .Chart.Name }}
 {{- with .Values.labels }}
 {{ toYaml . }}
+{{- end }}
+{{- end }}
+
+{{/*
+NFS Template
+*/}}
+{{- define "nfs.details" -}}
+{{- with .Values.nfs }}
+{{- toYaml . }}
 {{- end }}
 {{- end }}
