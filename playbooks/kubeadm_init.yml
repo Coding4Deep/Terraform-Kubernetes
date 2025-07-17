@@ -10,6 +10,8 @@
         owner: ubuntu
         group: ubuntu
         mode: '0755'
+  roles:
+    - docker_install
 
 
 
