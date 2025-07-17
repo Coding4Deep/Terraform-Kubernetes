@@ -8,7 +8,7 @@ pipeline {
     environment {
         // AWS_CREDS = credentials('aws-iam-creds')
         AWS_DEFAULT_REGION    = 'us-east-1'
-        VAULT_ADDR            = credentials('vault_addr')
+        VAULT_ADDR            = 'http://54.86.123.139:8200'
         // VAULT_TOKEN           = credentials('vault_token')
     }
     stages {

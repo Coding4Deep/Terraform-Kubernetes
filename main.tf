@@ -6,12 +6,12 @@ terraform {
     }
   }
   required_version = ">= 0.12"
-  # backend "s3" {
-  #   bucket  = "k8s-terra-project-bucket"
-  #   key     = "terraform/state"
-  #   region  = "us-east-1"
-  #   encrypt = true
-  # }
+  backend "s3" {
+    bucket  = "deepak-kubernetes-project-bucket"
+    key     = "terraform/state"
+    region  = "us-east-1"
+    encrypt = true
+  }
 }
 
 # provider "vault" {
@@ -44,7 +44,6 @@ module "VPC" {
 
   private_subnet_cidr_block = var.private_subnet_cidr_block
   private_subnet_az         = var.private_subnet_az
-
 }
 
 module "SecurityGroup" {
