@@ -8,9 +8,8 @@ spec:
   {{- .Values.StatefulSet.labels | toYaml | nindent 6 }}
   ports:
     - protocol: TCP
-      port: {{ .Values.StatefulSet.service.port }}
-      targetPort: {{ .Values.StatefulSet.service.targetPort }}
-      {{- include "spring-app.nodePort" . | nindent 6 }}
+      port: {{ .Values.StatefulSet.ports.port1Value }}
+      targetPort:  {{ .Values.StatefulSet.ports.port1Value }}
   type: {{.Values.StatefulSet.service.type }}
 
 

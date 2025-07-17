@@ -1,0 +1,43 @@
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: mongo-init-job
+#   namespace: namespace: {{ include "namespaceName" . }}
+#   labels:
+#     app: mongo-init
+#     {{- include "spring-app.labels" . | nindent 4 }}
+# spec:
+#   ttlSecondsAfterFinished: 60
+#   template:
+#     spec:
+#       restartPolicy: OnFailure
+#       containers:
+#         - name: mongo-init
+#           image: {{ .Values.mongodb.image | default "mongo:4.4" }}
+#           command:
+#             - /bin/bash
+#             - -c
+#             - |
+#               set -e
+#               # Wait for all MongoDB pods to be ready
+#               for i in $(seq 0 $(({{ .Values.mongodb.replicas | default 3 }} - 1))); do
+#                 echo "Waiting for {{ .Values.mongodb.statefulsetName }}-$i.{{ .Values.mongodb.serviceName }}.{{ .Release.Namespace }}.svc.cluster.local:27017..."
+#                 until nc -z {{ .Values.mongodb.statefulsetName }}-$i.{{ .Values.mongodb.serviceName }}.{{ .Release.Namespace }}.svc.cluster.local 27017; do
+#                   sleep 2
+#                 done
+#               done
+#               echo "All MongoDB pods are ready. Initiating replica set..."
+#               mongo --host {{ .Values.mongodb.statefulsetName }}-0.{{ .Values.mongodb.serviceName }}.{{ .Release.Namespace }}.svc.cluster.local:27017 --eval '
+#                 try {
+#                   rs.initiate({
+#                     _id: "{{ .Values.mongodb.replSetName | default "rs0" }}",
+#                     members: [
+#                       {{- range $i, $e := until (.Values.mongodb.replicas | default 3) }}
+#                         { _id: {{ $i }}, host: "{{ $.Values.mongodb.statefulsetName }}-{{ $i }}.{{ $.Values.mongodb.serviceName }}.{{ $.Release.Namespace }}.svc.cluster.local:27017" }{{ if ne (add1 $i) ($.Values.mongodb.replicas | default 3) }},{{ end }}
+#                       {{- end }}
+#                     ]
+#                   })
+#                 } catch (e) {
+#                   print(e)
+#                 }
+#               '

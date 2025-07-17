@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.memcached.name | default "memcached" }}
+  namespace: {{ include "namespaceName" . }}
+  labels:
+    app: {{ .Values.memcached.name | default "memcached" }}
+    {{- include "spring-app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.memcached.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ .Values.memcached.name | default "memcached" }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.memcached.name | default "memcached" }}
+    spec:
+      containers:
+        - name: memcached
+          image: {{ .Values.memcached.image | default "memcached:1.6-alpine" }}
+          ports:
+            - containerPort: 11211
+              name: memcached
+          resources:
+            requests:
+              memory: {{ .Values.memcached.resources.requests.memory | default "64Mi" }}
+              cpu: {{ .Values.memcached.resources.requests.cpu | default "50m" }}
+            limits:
+              memory: {{ .Values.memcached.resources.limits.memory | default "128Mi" }}
+              cpu: {{ .Values.memcached.resources.limits.cpu | default "100m" }} 

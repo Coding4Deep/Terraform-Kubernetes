@@ -48,7 +48,7 @@ PVC:
   pvc_label:
     pvc:  spring-pvc
 
-StatefulSet:
+StatefulSet: # mongodb
   name: mongo-set
   labels:
     app: mongo-set
@@ -57,9 +57,31 @@ StatefulSet:
   replicas: 1
   service:
     name: mongo-svc
+    type: NodePort
   containerName: mongo-cont
   image:  mongo:4.4
   ports:
     port1: mongo-port
     port1Value: 27017
   volumeName: mongo-vol
+
+rabbitmq:
+  name: rabbitmq
+  service:
+    name: rabbitmq
+  image: rabbitmq:3.12-management
+  defaultUser: rabbitmq
+  defaultPass: rabbitmq
+  storage: 1Gi
+
+memcached:
+  name: memcached
+  replicas: 1
+  image: memcached:1.6-alpine
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 50m
+    limits:
+      memory: 128Mi
+      cpu: 100m

@@ -23,6 +23,7 @@ spec:
         ports:
         - name: {{ .Values.StatefulSet.ports.port1 }}
           containerPort: {{ .Values.StatefulSet.ports.port1Value }}
+        command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
         volumeMounts:
         - name: {{ .Values.StatefulSet.volumeName }}
           mountPath: /data/db 
