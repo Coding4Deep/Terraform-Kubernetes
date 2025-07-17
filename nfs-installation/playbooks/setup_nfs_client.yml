@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars:
-    nfs_server_ip: 172.31.86.224  # Replace with your Ansible controller's private IP
+    nfs_server_ip: 172.31.86.0  # Replace with your Ansible controller's private IP
   tasks:
     - name: Install NFS client package
       apt:

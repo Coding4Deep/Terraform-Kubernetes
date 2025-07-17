@@ -4,18 +4,19 @@ metadata:
   name: {{ .Values.StatefulSet.name}}
   labels:
   {{- include "spring-app.labels" . | nindent 4 }}
+  namespace: {{ include "namespaceName" . }}
 spec:
   replicas: {{ .Values.StatefulSet.replicas }}
   selector:
     matchLabels:
-    {{ .Values.labels.app | nindent 4 }}
+    {{- .Values.StatefulSet.labels | toYaml | nindent 6 }}
   serviceName: {{ .Values.StatefulSet.service.name }}
-  terminationGracePeriodSeconds: 10
   template:
     metadata:
-      labels:
-        {{ .Values.labels.app | nindent 6 }}
+      labels: 
+      {{- .Values.StatefulSet.labels | toYaml | nindent 8 }}
     spec:
+      terminationGracePeriodSeconds: 10
       containers:
       - name: {{ .Values.StatefulSet.containerName }}
         image: {{ .Values.StatefulSet.image }}
@@ -23,8 +24,9 @@ spec:
         - name: {{ .Values.StatefulSet.ports.port1 }}
           containerPort: {{ .Values.StatefulSet.ports.port1Value }}
         volumeMounts:
-        - name: mongo-vol
-          mountPath: /data/db
-  volumeClaimTemplates:
-  - metadata:
-      name: {{ .Values.StatefulSet.volumeName }}
+        - name: {{ .Values.StatefulSet.volumeName }}
+          mountPath: /data/db 
+      volumes:
+      - name: {{ .Values.StatefulSet.volumeName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.PVC.name }}

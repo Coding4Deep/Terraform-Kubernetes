@@ -32,24 +32,29 @@ PV:
   name: spring-pv
   storage: 5Gi
   volumeMode: Filesystem
-  accessModes: ReadWriteMany
+  accessModes: 
+  - ReadWriteMany
   reclaimPolicy: Retain
   pv_label:
      pv: spring-pv
     
 nfs:
-  server: 172.31.86.224
-  path: /mnt/kubeadm
+  server: 172.31.86.0
+  path: /mnt/kubedata
 
 PVC:
-  name: spring-PVC
+  name: spring-pvc
   storage: 5Gi
   pvc_label:
     pvc:  spring-pvc
 
 StatefulSet:
   name: mongo-set
-  replicas: 3
+  labels:
+    app: mongo-set
+    env: dev
+    version: v1
+  replicas: 1
   service:
     name: mongo-svc
   containerName: mongo-cont

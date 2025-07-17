@@ -30,11 +30,5 @@ spec:
             limits:
               memory: {{ .Values.deployment.resources.limits.memory }}
               cpu: {{ .Values.deployment.resources.limits.cpu }}
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchLabels:
-                  {{- include "spring-app.labels" . | nindent 18 }}
-              topologyKey: kubernetes.io/hostname
+
 

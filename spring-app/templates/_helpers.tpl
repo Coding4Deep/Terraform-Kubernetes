@@ -28,7 +28,7 @@ Custom + common labels
 */}}
 {{- define "spring-app.labels" -}}
 {{- with .Values.labels }}
-{{ toYaml . }}
+{{- toYaml . }}
 {{- end }}
 {{- end }}
 
