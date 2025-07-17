@@ -1,9 +1,9 @@
 pipeline {
     agent { label 'ubuntu' }
 
-    triggers {
-        githubPush()
-    }   
+    // triggers {
+    //     githubPush()
+    // }   
 
     environment {
         AWS_DEFAULT_REGION    = 'us-east-1'
@@ -25,7 +25,13 @@ pipeline {
               ]]]
             ){
               sh '''
-                
+                 ansible-inventory --graph
+                 ansible-playbook  playbooks/hostname_change.yml
+                 ansible-playbook  playbooks/docker_install.yml
+                 ansible-playbook  playbooks/k8s_configure.yml
+                 ansible-playbook  playbooks/k8s_components.yml
+                 ansible-playbook  playbooks/kubeadm_init.yml
+                 ansible-playbook  playbooks/kubeadm_join.yml  
                  cd terraform && terraform init && terraform plan  && terraform apply --auto-approve            
               '''
             }
