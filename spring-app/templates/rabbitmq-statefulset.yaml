@@ -8,7 +8,7 @@ metadata:
     {{- include "spring-app.labels" . | nindent 4 }}
 spec:
   serviceName: {{ .Values.rabbitmq.service.name | default "rabbitmq" }}
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: {{ .Values.rabbitmq.name | default "rabbitmq" }}
@@ -33,6 +33,13 @@ spec:
           volumeMounts:
             - name: rabbitmq-data
               mountPath: /var/lib/rabbitmq
-      volumes:
-        - name: rabbitmq-data
-          emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: rabbitmq-data  # name used in volumeMounts above
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: nfs-sc  # or gp2, standard, etc., depending on your cluster
+      resources:
+        requests:
+          storage: 500Mi
+      

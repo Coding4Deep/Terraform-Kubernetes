@@ -4,13 +4,14 @@ metadata:
   name: {{ .Values.StatefulSet.service.name }}
   namespace: {{ include "namespaceName" . }}
 spec:
+  clusterIP: None
   selector:
   {{- .Values.StatefulSet.labels | toYaml | nindent 6 }}
   ports:
     - protocol: TCP
       port: {{ .Values.StatefulSet.ports.port1Value }}
       targetPort:  {{ .Values.StatefulSet.ports.port1Value }}
-  type: {{.Values.StatefulSet.service.type }}
+  # type: {{.Values.StatefulSet.service.type }}
 
 
 

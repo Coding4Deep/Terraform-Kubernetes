@@ -27,7 +27,12 @@ spec:
         volumeMounts:
         - name: {{ .Values.StatefulSet.volumeName }}
           mountPath: /data/db 
-      volumes:
-      - name: {{ .Values.StatefulSet.volumeName }}
-        persistentVolumeClaim:
-          claimName: {{ .Values.PVC.name }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.StatefulSet.volumeName }}  # name used in volumeMounts above
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: nfs-sc  # or gp2, standard, etc., depending on your cluster
+      resources:
+        requests:
+          storage: 500Mi

@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.memcached.name | default "memcached" }}
   namespace: {{ include "namespaceName" . }}
   labels:
-    app: {{ .Values.memcached.name | default "memcached" }}
+    state: {{ .Values.memcached.name | default "memcached" }}
     {{- include "spring-app.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.memcached.replicas | default 1 }}

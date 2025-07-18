@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.name }}
+  namespace: {{ include "namespaceName" . }}
+  labels:{{- include "spring-app.labels" . | nindent 4 }}
+
+data:
+  MONGO_HOST: "mongo-svc"
+  MONGO_PORT: "27017"
+  MONGO_DATABASE: "devopsdb"
+  RABBITMQ_HOST: "rabbitmq"
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_USERNAME: "rabbitmq"
+  RABBITMQ_PASSWORD: "rabbitmq"
+  MEMCACHED_SERVERS: "memcached:11211"

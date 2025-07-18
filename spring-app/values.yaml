@@ -54,7 +54,7 @@ StatefulSet: # mongodb
     app: mongo-set
     env: dev
     version: v1
-  replicas: 1
+  replicas: 3
   service:
     name: mongo-svc
     type: NodePort
@@ -85,3 +85,9 @@ memcached:
     limits:
       memory: 128Mi
       cpu: 100m
+
+
+
+configmap:
+  name: spring-configmap
+  

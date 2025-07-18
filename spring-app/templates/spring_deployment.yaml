@@ -25,23 +25,45 @@ spec:
               protocol: TCP
           env:
           - name: MONGO_HOST
-            value: "mongo-svc"  
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}  
+                key: MONGO_HOST         
           - name: MONGO_PORT
-            value: "27017"
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}
+                key: MONGO_PORT       
           - name: MONGO_DATABASE
-            value: "devopsdb"
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}     
+                key:   MONGO_DATABASE         
           - name: RABBITMQ_HOST
-            value: "rabbitmq"
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}
+                key: RABBITMQ_HOST
           - name: RABBITMQ_PORT
-            value: "5672"
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}
+                key: RABBITMQ_PORT
           - name: RABBITMQ_USERNAME
-            value: "rabbitmq"
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}     
+                key: RABBITMQ_USERNAME         
           - name: RABBITMQ_PASSWORD
-            value: "rabbitmq"
-          - name: RABBITMQ_VHOST
-            value: "/"
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}
+                key: RABBITMQ_PASSWORD
           - name: MEMCACHED_SERVERS
-            value: "memcached:11211"
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.configmap.name }}
+                key: MEMCACHED_SERVERS
           resources:
             requests: 
               memory: {{ .Values.deployment.resources.requests.memory }}

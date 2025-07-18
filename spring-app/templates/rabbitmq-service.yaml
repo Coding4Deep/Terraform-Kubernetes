@@ -13,4 +13,4 @@ spec:
       name: management
   clusterIP: None
   selector:
-    app: {{ .Values.rabbitmq.name | default "rabbitmq" }} 
+    app: {{ .Values.rabbitmq.name | default "rabbitmq" }}
